@@ -38,7 +38,11 @@
     "sell_order": "Sell Order",
     "insufficient_balance": "Insufficient balance",
     "insufficient_stock": "Insufficient stock holdings",
-    "trade_success": "Trade executed successfully"
+    "trade_success": "Trade executed successfully",
+    "chart_1y": "1Y",
+    "chart_6m": "6M",
+    "chart_3m": "3M",
+    "chart_1m": "1M"
   },
   "ai": {
     "title": "AI Recommendation",

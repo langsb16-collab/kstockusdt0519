@@ -22,6 +22,7 @@ export function Dashboard() {
   const [aiAnalysis, setAiAnalysis] = useState('Analyzing market sentiment...');
   const [searchQuery, setSearchQuery] = useState('');
   const [orderQty, setOrderQty] = useState(1);
+  const [chartPeriod, setChartPeriod] = useState<'1Y' | '6M' | '3M' | '1M'>('3M');
 
   useEffect(() => {
     // Simulate periodic AI insights using translation keys
@@ -148,14 +149,14 @@ export function Dashboard() {
       </div>
 
       {/* Main 3-Column Grid */}
-      <div className="flex-1 grid grid-cols-1 xl:grid-cols-[280px_1fr_320px] gap-4 min-h-0">
+      <div className="flex-1 grid grid-cols-1 xl:grid-cols-[380px_1fr_320px] gap-4 min-h-0">
         
         {/* Left Sidebar: Ranking & News */}
         <aside className="hidden xl:flex flex-col gap-4 min-h-0">
           <div className="premium-card flex-1 flex flex-col min-h-0">
-            <div className="p-3 border-b border-border-soft flex items-center justify-between bg-bg-secondary/20">
-              <h3 className="text-xs font-bold flex items-center gap-2">
-                <RefreshCw size={14} className="text-button-primary" />
+            <div className="p-4 border-b border-border-soft flex items-center justify-between bg-bg-secondary/20">
+              <h3 className="text-base font-bold flex items-center gap-2">
+                <RefreshCw size={16} className="text-button-primary" />
                 {t('common.stock_ranking')}
               </h3>
               <div className="relative">
@@ -165,7 +166,7 @@ export function Dashboard() {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder={t('common.search')}
-                  className="pl-8 pr-3 py-1 bg-bg-input border border-border-soft rounded-full text-[10px] focus:ring-1 focus:ring-button-primary outline-none text-text-primary w-32"
+                  className="pl-8 pr-3 py-1 bg-bg-input border border-border-soft rounded-full text-xs focus:ring-1 focus:ring-button-primary outline-none text-text-primary w-36"
                 />
               </div>
             </div>
@@ -175,17 +176,17 @@ export function Dashboard() {
                   key={stock.id}
                   onClick={() => setSelectedStock(stock)}
                   className={cn(
-                    "px-4 py-2 flex items-center justify-between cursor-pointer hover:bg-button-primary/5 transition-colors border-b border-border-soft/30 last:border-0",
+                    "px-4 py-3 flex items-center justify-between cursor-pointer hover:bg-button-primary/5 transition-colors border-b border-border-soft/30 last:border-0",
                     selectedStock.id === stock.id && "bg-button-primary/5 border-l-2 border-l-button-primary"
                   )}
                 >
                   <div className="flex flex-col">
-                    <span className="text-xs font-bold truncate w-24">{t('stocks.' + stock.code, stock.name)}</span>
-                    <span className="text-[9px] text-text-muted">{stock.code}</span>
+                    <span className="text-sm font-bold truncate w-32">{t('stocks.' + stock.code, stock.name)}</span>
+                    <span className="text-[10px] text-text-muted">{stock.code}</span>
                   </div>
                   <div className="text-right">
-                    <div className="text-xs font-mono font-bold">{formatCurrency(stock.price, i18n.language)}</div>
-                    <div className={cn("text-[9px] font-bold", stock.change >= 0 ? "text-green-500" : "text-red-500")}>
+                    <div className="text-sm font-mono font-bold">{formatCurrency(stock.price, i18n.language)}</div>
+                    <div className={cn("text-xs font-bold", stock.change >= 0 ? "text-green-500" : "text-red-500")}>
                       {stock.change >= 0 ? "+" : ""}{stock.changePercent.toFixed(2)}%
                     </div>
                   </div>
@@ -210,11 +211,38 @@ export function Dashboard() {
         <main className="flex flex-col gap-4 min-h-0">
           <section className="premium-card flex-1 p-6 flex flex-col">
             <div className="flex justify-between items-start mb-4">
-              <div>
+              <div className="flex-1 min-w-0 mr-4">
                 <h2 className="text-2xl font-black tracking-tighter">{t('stocks.' + selectedStock.code, selectedStock.name)}</h2>
                 <p className="text-xs font-bold text-text-muted">{selectedStock.code}.KS</p>
-                <div className="mt-2 text-[11px] text-text-muted italic bg-bg-secondary/50 p-2 rounded-lg border border-border-soft/50 max-w-md">
-                  {t('ai.title')}: "{aiAnalysis}"
+                <div className="mt-2 flex flex-col sm:flex-row sm:items-center gap-3">
+                  <div className="text-[11px] text-text-muted italic bg-bg-secondary/50 p-2 rounded-lg border border-border-soft/50 flex-1 min-w-0 max-w-xs truncate">
+                    {t('ai.title')}: "{aiAnalysis}"
+                  </div>
+                  {/* 차트 기간 필터 세그먼트 컨트롤 */}
+                  <div className="flex items-center bg-bg-secondary/60 p-1 rounded-xl shrink-0 border border-border-soft/40">
+                    {(['1Y','6M','3M','1M'] as const).map((period) => {
+                      const labelMap: Record<string, string> = {
+                        '1Y': t('common.chart_1y'),
+                        '6M': t('common.chart_6m'),
+                        '3M': t('common.chart_3m'),
+                        '1M': t('common.chart_1m'),
+                      };
+                      return (
+                        <button
+                          key={period}
+                          onClick={() => setChartPeriod(period)}
+                          className={cn(
+                            'px-3 py-1.5 text-[10px] font-bold rounded-lg transition-all duration-200',
+                            chartPeriod === period
+                              ? 'bg-white text-button-primary shadow-sm'
+                              : 'text-text-muted hover:text-text-primary'
+                          )}
+                        >
+                          {labelMap[period]}
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
               <StockPriceSection 

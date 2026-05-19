@@ -38,7 +38,11 @@
     "sell_order": "매도 주문",
     "insufficient_balance": "잔액이 부족합니다",
     "insufficient_stock": "보유 주식이 부족합니다",
-    "trade_success": "거래가 성공적으로 체결되었습니다"
+    "trade_success": "거래가 성공적으로 체결되었습니다",
+    "chart_1y": "1년",
+    "chart_6m": "6개월",
+    "chart_3m": "3개월",
+    "chart_1m": "1개월"
   },
   "ai": {
     "title": "AI 추천",
