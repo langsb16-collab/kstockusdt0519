@@ -23,6 +23,12 @@ export function Dashboard() {
   const [searchQuery, setSearchQuery] = useState('');
   const [orderQty, setOrderQty] = useState(1);
   const [chartPeriod, setChartPeriod] = useState<'1Y' | '6M' | '3M' | '1M'>('3M');
+  const [isXL, setIsXL] = useState(window.innerWidth >= 1280);
+  useEffect(() => {
+    const handler = () => setIsXL(window.innerWidth >= 1280);
+    window.addEventListener('resize', handler);
+    return () => window.removeEventListener('resize', handler);
+  }, []);
 
   useEffect(() => {
     // Simulate periodic AI insights using translation keys
@@ -149,13 +155,13 @@ export function Dashboard() {
       </div>
 
       {/* Main 3-Column Grid */}
-      <div className="flex-1 grid grid-cols-1 xl:grid-cols-[380px_1fr_320px] gap-4 min-h-0">
+      <div className="flex-1 grid gap-4 min-h-0" style={{gridTemplateColumns: '420px 1fr 320px'}}>
         
         {/* Left Sidebar: Ranking & News */}
-        <aside className="hidden xl:flex flex-col gap-4 min-h-0">
+        <aside className="flex flex-col gap-4 min-h-0">
           <div className="premium-card flex-1 flex flex-col min-h-0">
             <div className="p-4 border-b border-border-soft flex items-center justify-between bg-bg-secondary/20">
-              <h3 className="text-base font-bold flex items-center gap-2">
+              <h3 className="text-lg font-bold flex items-center gap-2">
                 <RefreshCw size={16} className="text-button-primary" />
                 {t('common.stock_ranking')}
               </h3>
@@ -181,12 +187,12 @@ export function Dashboard() {
                   )}
                 >
                   <div className="flex flex-col">
-                    <span className="text-sm font-bold truncate w-32">{t('stocks.' + stock.code, stock.name)}</span>
+                    <span className="text-base font-bold truncate w-40">{t('stocks.' + stock.code, stock.name)}</span>
                     <span className="text-[10px] text-text-muted">{stock.code}</span>
                   </div>
                   <div className="text-right">
-                    <div className="text-sm font-mono font-bold">{formatCurrency(stock.price, i18n.language)}</div>
-                    <div className={cn("text-xs font-bold", stock.change >= 0 ? "text-green-500" : "text-red-500")}>
+                    <div className="text-base font-mono font-bold">{formatCurrency(stock.price, i18n.language)}</div>
+                    <div className={cn("text-sm font-bold", stock.change >= 0 ? "text-green-500" : "text-red-500")}>
                       {stock.change >= 0 ? "+" : ""}{stock.changePercent.toFixed(2)}%
                     </div>
                   </div>
