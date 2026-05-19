@@ -1,0 +1,6 @@
+{
+  "name": "K-STOCK USDT",
+  "description": "USDT-based Korean Stock Trading Platform with AI recommendations and multi-language support.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
