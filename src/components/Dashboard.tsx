@@ -155,7 +155,7 @@ export function Dashboard() {
       </div>
 
       {/* Main 3-Column Grid */}
-      <div className="flex-1 grid gap-4 min-h-0" style={{gridTemplateColumns: '420px 1fr 320px'}}>
+      <div className="flex-1 grid gap-4 min-h-0" style={{gridTemplateColumns: '320px 1fr 420px'}}>
         
         {/* Left Sidebar: Ranking & News */}
         <aside className="flex flex-col gap-4 min-h-0">
@@ -287,21 +287,21 @@ export function Dashboard() {
 
         {/* Right Panel: Order Book & Trading */}
         <aside className="flex flex-col gap-4 min-h-0">
-          <div className="premium-card h-[320px] flex flex-col min-h-0">
+          <div className="premium-card h-[360px] flex flex-col min-h-0">
              <div className="p-3 border-b border-border-soft bg-bg-secondary/20 shrink-0">
-               <h3 className="text-xs font-bold">{t('common.order_book')}</h3>
+               <h3 className="text-sm font-bold">{t('common.order_book')}</h3>
              </div>
              <div className="flex-1 overflow-y-auto scrollbar-hide">
                {[...Array(10)].map((_, i) => (
                  <div key={i} className={cn(
-                   "relative h-7 flex items-center px-3 border-b border-border-soft/10",
+                   "relative h-9 flex items-center px-3 border-b border-border-soft/10",
                    i < 5 ? "bg-red-500/[0.03]" : "bg-blue-500/[0.03]"
                  )}>
                    <div className={cn(
                      "absolute right-0 top-0 bottom-0 opacity-10",
                      i < 5 ? "bg-red-400" : "bg-blue-400"
                    )} style={{ width: `${Math.random() * 100}%` }}></div>
-                   <span className="text-[10px] font-mono font-bold w-full flex justify-between z-10">
+                   <span className="text-xs font-mono font-bold w-full flex justify-between z-10">
                      <span className={i < 5 ? "text-red-500/80" : "text-blue-500/80"}>{formatCurrency(selectedStock.price - (i-5)*100, i18n.language)}</span>
                      <span className="text-text-primary">{Math.floor(Math.random() * 2000)}</span>
                    </span>
@@ -312,13 +312,13 @@ export function Dashboard() {
 
           <div className="premium-card flex-1 p-5 flex flex-col gap-4">
              <div className="flex gap-1 bg-bg-secondary/50 p-1 rounded-xl">
-               <button className="flex-1 py-1.5 text-[10px] font-black bg-button-primary text-white rounded-lg transition-all">{t('common.buy')}</button>
-               <button className="flex-1 py-1.5 text-[10px] font-black text-text-muted hover:text-text-primary transition-all">{t('common.sell')}</button>
+               <button className="flex-1 py-2 text-xs font-black bg-button-primary text-white rounded-lg transition-all">{t('common.buy')}</button>
+               <button className="flex-1 py-2 text-xs font-black text-text-muted hover:text-text-primary transition-all">{t('common.sell')}</button>
              </div>
 
              <div className="space-y-3">
                <div>
-                 <label className="text-[9px] font-bold text-text-muted uppercase mb-1 block">
+                 <label className="text-xs font-bold text-text-muted uppercase mb-1 block">
                    {t('common.qty')} 
                    <span className="float-right lowercase">{t('common.holding')} {account.holdings.find(h => h.code === selectedStock.code)?.quantity || 0}</span>
                  </label>
@@ -339,23 +339,23 @@ export function Dashboard() {
                </div>
 
                <div className="pt-4 border-t border-border-soft">
-                  <div className="flex justify-between text-[11px] font-bold mb-1">
+                  <div className="flex justify-between text-xs font-bold mb-1">
                      <span className="text-text-muted">{t('common.est_total_krw')}</span>
                      <span className="text-text-primary">{formatCurrency(selectedStock.price * orderQty, i18n.language)}</span>
                   </div>
-                  <div className="flex justify-between text-[11px] font-bold mb-4">
+                  <div className="flex justify-between text-xs font-bold mb-4">
                      <span className="text-text-muted">{t('common.est_cost_usdt')}</span>
                      <span className="text-button-primary font-black">{(selectedStock.price * orderQty / exchangeRate).toFixed(2)} USDT</span>
                   </div>
                   <div className="flex gap-2">
                     <button 
                       onClick={() => handleTrade('BUY')}
-                      className="flex-1 py-3 bg-green-500 text-white text-[10px] font-black rounded-xl shadow-lg shadow-green-500/20 hover:scale-[1.02] active:scale-95 transition-all">
+                      className="flex-1 py-3 bg-green-500 text-white text-xs font-black rounded-xl shadow-lg shadow-green-500/20 hover:scale-[1.02] active:scale-95 transition-all">
                       {t('common.buy').toUpperCase()}
                     </button>
                     <button 
                       onClick={() => handleTrade('SELL')}
-                     className="flex-1 py-3 bg-red-500 text-white text-[10px] font-black rounded-xl shadow-lg shadow-red-500/20 hover:scale-[1.02] active:scale-95 transition-all">
+                     className="flex-1 py-3 bg-red-500 text-white text-xs font-black rounded-xl shadow-lg shadow-red-500/20 hover:scale-[1.02] active:scale-95 transition-all">
                      {t('common.sell').toUpperCase()}
                     </button>
                   </div>
